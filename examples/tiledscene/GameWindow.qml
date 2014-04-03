@@ -19,9 +19,8 @@
  * @author Roger Felipe Zanoni da Silva <roger.zanoni@openbossa.org>
  */
 
-//import QuasiGame 1.0
 
-QuasiGame {
+Game {
     id: game
 
     width: 400
@@ -29,14 +28,12 @@ QuasiGame {
 
     currentScene: scene
 
-    QuasiTiledScene {
+    TiledScene {
         id: scene
-        //anchors.fill: parent
+        anchors.fill: parent
         focus: true
 
-        //source: "/tmp/basic1.tmx"
-        //source: "/usr/share/doc/tiled/examples/isometric_grass_and_water.tmx"
-        source: "/usr/share/doc/tiled/examples/desert.tmx"
+        source: "/tmp/basic1.tmx"
 
         Component.onCompleted: console.log("Width: " + width + " x Height: " + height)
     }
