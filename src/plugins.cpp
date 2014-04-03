@@ -43,6 +43,7 @@
 #include "line.h"
 #include "fixture.h"
 #include "material.h"
+#include "tiledscene.h"
 
 void Plugins::registerTypes(const char *uri)
 {
@@ -73,4 +74,5 @@ void Plugins::registerTypes(const char *uri)
     qmlRegisterType<Line>("Bacon2D", 1, 0, "Line");
     qmlRegisterType<Material>("Bacon2D", 1, 0, "Material");
     qmlRegisterType<Fixture>("Bacon2D", 1, 0, "Fixture");
+    qmlRegisterType<TiledScene>("Bacon2D", 1, 0, "TiledScene");
 }
