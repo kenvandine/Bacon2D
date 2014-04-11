@@ -38,6 +38,7 @@
 #include "polyline.h"
 #include "circle.h"
 #include "line.h"
+#include "tiledscene.h"
 
 #include "box2dworld.h"
 #include "box2dbody.h"
@@ -81,6 +82,7 @@ void Plugins::registerTypes(const char *uri)
     qmlRegisterType<Polyline>("Bacon2D", 1, 0, "Polyline");
     qmlRegisterType<Circle>("Bacon2D", 1, 0, "Circle");
     qmlRegisterType<Line>("Bacon2D", 1, 0, "Line");
+    qmlRegisterType<TiledScene>("Bacon2D", 1, 0, "TiledScene");
 
     qmlRegisterType<Box2DWorld>("Bacon2D", 1, 0, "World");
     qmlRegisterType<Box2DBody>("Bacon2D", 1, 0, "Body");

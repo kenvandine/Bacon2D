@@ -19,6 +19,10 @@ INCLUDEPATH += ../3rdparty/qml-box2d/
 DEFINES += STATIC_PLUGIN_BOX2D
 include(../3rdparty/qml-box2d/box2d-static.pri)
 
+INCLUDEPATH += $$PWD/../3rdparty
+include(../3rdparty/libtiled/libtiled.pri)
+include($$PWD/tmx/tmx.pri)
+
 HEADERS += entity.h \
            scene.h \
            game.h \
@@ -41,7 +45,8 @@ HEADERS += entity.h \
            polygon.h \
            polyline.h \
            circle.h \
-           line.h
+           line.h \
+           tiledscene.h
 
 SOURCES += entity.cpp \
            scene.cpp \
@@ -63,7 +68,8 @@ SOURCES += entity.cpp \
            line.cpp \
            triangle.cpp \
            polygon.cpp \
-           polyline.cpp
+           polyline.cpp \
+           tiledscene.cpp
 
 QMAKE_POST_LINK = $$QMAKE_COPY $$PWD/qmldir $$OUT_PWD/imports/Bacon2D
 
