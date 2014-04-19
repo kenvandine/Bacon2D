@@ -58,9 +58,7 @@ void Game::setCurrentScene(Scene *currentScene)
     if (!m_currentScene) {
         currentScene->setX((qreal)this->x());
         currentScene->setRunning(true);
-    }
-  
-    else {
+    } else {
         applyTransition(m_currentScene, currentScene);
     }
 
@@ -81,15 +79,15 @@ void Game::applyTransition(Scene *p, Scene *n)
             p->setRunning(false);
             QPropertyAnimation *prev = new QPropertyAnimation(p, "x");
             prev->setDuration(500);
-            prev->setStartValue((qreal)this->x());
-            prev->setEndValue((qreal)-this->width());
+            prev->setStartValue((qreal)p->x());
+            prev->setEndValue(-(qreal)p->width());
             anim->addAnimation(prev);
         }
 
         if (n) {
             QPropertyAnimation *next = new QPropertyAnimation(n, "x");
             next->setDuration(500);
-            next->setStartValue((qreal)this->width());
+            next->setStartValue((qreal)n->width());
             next->setEndValue((qreal)this->x());
             anim->addAnimation(next);
         }
