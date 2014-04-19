@@ -35,6 +35,7 @@ Scene::Scene(Game *parent)
     , m_debug(false)
 {
     setVisible(false);
+    setX((qreal)width());
 
     connect(this, SIGNAL(debugChanged()), SLOT(onDebugChanged()));
 }

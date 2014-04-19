@@ -71,6 +71,7 @@ protected:
     bool m_running;
     Game *m_game;
     bool m_debug;
+    Bacon2D::SceneTransition m_sceneTransition;
 };
 
 

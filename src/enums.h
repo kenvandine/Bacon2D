@@ -33,6 +33,7 @@ class Bacon2D : public QObject {
         DrawType
         Ordering
         EntityType
+        SceneTransition
     )
 
 public:
@@ -47,6 +48,12 @@ public:
         PlaneDrawType,
         TiledDrawType
     };
+
+    enum SceneTransition {
+        Horizontal,
+        Fade
+    };
+
 };
 
 #endif /* _ENUMS_H_ */

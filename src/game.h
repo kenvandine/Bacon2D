@@ -22,6 +22,8 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
+#include "enums.h"
+
 #include <QtQuick/QQuickItem>
 #include <QtCore/QTime>
 #include <QtCore/QtGlobal>
@@ -33,6 +35,7 @@ class Game : public QQuickItem
     Q_OBJECT
 
     Q_PROPERTY(Scene *currentScene READ currentScene WRITE setCurrentScene NOTIFY currentSceneChanged)
+    Q_PROPERTY(Bacon2D::SceneTransition sceneTransition READ sceneTransition WRITE setSceneTransition)
     Q_PROPERTY(int fps READ fps WRITE setFps NOTIFY fpsChanged)
     Q_PROPERTY(QPointF mouse READ mouse)
 
@@ -42,13 +45,20 @@ public:
     Scene *currentScene() const;
     void setCurrentScene(Scene *currentScene);
 
+    Bacon2D::SceneTransition sceneTransition();
+    void setSceneTransition(Bacon2D::SceneTransition t);
+
     int fps() const;
     void setFps(const int &fps);
 
     QPointF mouse();
 
+private slots:
+    void startScene();
+
 protected:
     void timerEvent(QTimerEvent *event);
+    void applyTransition(Scene *p, Scene *n);
     void update();
 
 signals:
@@ -57,6 +67,7 @@ signals:
 
 private:
     Scene *m_currentScene;
+    Bacon2D::SceneTransition m_sceneTransition;
     QTime m_gameTime;
     int m_fps;
     int m_timerId;

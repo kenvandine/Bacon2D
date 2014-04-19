@@ -24,7 +24,9 @@
 #include "scene.h"
 
 #include <QtQuick/QQuickWindow>
-
+#include <QParallelAnimationGroup>
+#include <QPropertyAnimation>
+#include <QAbstractAnimation>
 #include <QtGui/QCursor>
 
 Game::Game(QQuickItem *parent)
@@ -32,6 +34,7 @@ Game::Game(QQuickItem *parent)
     , m_currentScene(0)
     , m_fps(30)
     , m_timerId(0)
+    , m_sceneTransition(Bacon2D::Horizontal)
 {
     m_gameTime.start();
     m_timerId = startTimer(1000 / m_fps);
@@ -44,27 +47,66 @@ Scene *Game::currentScene() const
 
 void Game::setCurrentScene(Scene *currentScene)
 {
-    if (m_currentScene == currentScene)
+    if ((m_currentScene == currentScene) || !currentScene)
         return;
 
-    if (m_currentScene) {
-        m_currentScene->setRunning(false);
-        m_currentScene->setVisible(false);
+    currentScene->setGame(this);
+    currentScene->setParent(this);
+    currentScene->setParentItem(this);
+    currentScene->setVisible(true);
+
+    if (!m_currentScene) {
+        currentScene->setX((qreal)this->x());
+        currentScene->setRunning(true);
+    }
+  
+    else {
+        applyTransition(m_currentScene, currentScene);
     }
 
     m_currentScene = currentScene;
-
-    if (m_currentScene) {
-        m_currentScene->setGame(this);
-
-        m_currentScene->setParent(this);
-        m_currentScene->setParentItem(this);
-
-        m_currentScene->setRunning(true);
-        m_currentScene->setVisible(true);
-    }
-
     emit currentSceneChanged();
+}
+
+void Game::startScene() 
+{
+    qDebug() << Q_FUNC_INFO;
+    m_currentScene->setRunning(true);
+}
+
+void Game::applyTransition(Scene *p, Scene *n)
+{
+        QParallelAnimationGroup *anim = new QParallelAnimationGroup;
+        if (p) {
+            p->setRunning(false);
+            QPropertyAnimation *prev = new QPropertyAnimation(p, "x");
+            prev->setDuration(500);
+            prev->setStartValue((qreal)this->x());
+            prev->setEndValue((qreal)-this->width());
+            anim->addAnimation(prev);
+        }
+
+        if (n) {
+            QPropertyAnimation *next = new QPropertyAnimation(n, "x");
+            next->setDuration(500);
+            next->setStartValue((qreal)this->width());
+            next->setEndValue((qreal)this->x());
+            anim->addAnimation(next);
+        }
+
+        connect(anim, SIGNAL(finished()), this, SLOT(startScene()));
+        anim->start();
+}
+
+void Game::setSceneTransition(Bacon2D::SceneTransition sceneTransition)
+{
+    if (m_sceneTransition != sceneTransition)
+        m_sceneTransition = sceneTransition;
+}
+
+Bacon2D::SceneTransition Game::sceneTransition()
+{
+    return m_sceneTransition;
 }
 
 int Game::fps() const
