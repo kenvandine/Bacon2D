@@ -87,7 +87,7 @@ void Game::applyTransition(Scene *p, Scene *n)
         if (n) {
             QPropertyAnimation *next = new QPropertyAnimation(n, "x");
             next->setDuration(500);
-            next->setStartValue((qreal)n->width());
+            next->setStartValue((qreal)this->width());
             next->setEndValue((qreal)this->x());
             anim->addAnimation(next);
         }
