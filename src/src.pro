@@ -33,7 +33,8 @@ HEADERS += entity.h \
            viewport.h \
            enums.h \
            behavior.h \
-           scriptbehavior.h 
+           scriptbehavior.h \ 
+           settings.h
 
 SOURCES += entity.cpp \
            scene.cpp \
