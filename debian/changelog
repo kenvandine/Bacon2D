@@ -1,3 +1,9 @@
+bacon2d (0.1~git20140617) utopic; urgency=medium
+
+  * New snapshot
+
+ -- Ken VanDine <ken.vandine@canonical.com>  Tue, 17 Jun 2014 14:10:26 -0400
+
 bacon2d (0.1~git20140612) utopic; urgency=low
 
   * New package
