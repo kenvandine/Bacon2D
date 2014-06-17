@@ -3,6 +3,8 @@ import Bacon2D 1.0
 import "cannon"
 import "rope"
 import "parallax"
+import "behaviors"
+import "car"
 
 Item {
     id: root
@@ -20,6 +22,11 @@ Item {
             anchors.fill: parent
             color: "black"
             visible: !game.currentScene || game.currentScene === parallaxScene
+            MenuButton {
+                anchors.centerIn: parent
+                height: 128
+                text: "Bacon2D"
+            }
         }
 
         CannonScene {
@@ -38,21 +45,42 @@ Item {
             anchors.right: parent.right
         }
 
-        MenuButton {
+        BehaviorScene {
+            id: behaviorScene
+            anchors.fill: parent
+        }
+
+        CarScene {
+            id: carScene
+            anchors.fill: parent
+        }
+
+        Row {
             anchors {
                 top: game.top
                 topMargin: 5
                 right: game.right
                 rightMargin: 5
             }
-            width: 130
             height: 30
-            visible: game.currentScene.physics
-            text: game.currentScene.debug ? "Debug: on" : "Debug: off"
-            onClicked: game.currentScene.debug = !game.currentScene.debug
+            width: childrenRect.width
+            spacing: 10
+            MenuButton {
+                width: !visible ? 0 : 130
+                height: 32
+                visible: game.currentScene.physics
+                text: game.currentScene.debug ? "Debug: on" : "Debug: off"
+                onClicked: game.currentScene.debug = !game.currentScene.debug
+            }
+
+            PlayButton {
+                id: playButton
+                paused: !game.currentScene.running
+                width: 32
+                height: 32
+                onClicked: game.currentScene.running = !game.currentScene.running
+            }
         }
-
-
     }
 
     Menu {

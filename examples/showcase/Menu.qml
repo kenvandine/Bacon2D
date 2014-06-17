@@ -6,7 +6,7 @@ Item {
     width: parent.width
     height: parent.height
 
-    property int bigFontSize: parent.width / 15.0
+    property int bigFontSize: 36
 
     FontLoader { id: dPuntillasFont; source: "fonts/d-puntillas-D-to-tiptoe.ttf" }
 
@@ -38,6 +38,19 @@ Item {
             text: "Parallax"
             onClicked: game.currentScene = parallaxScene
         }
+
+        MenuButton {
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: bigFontSize
+            text: "Behaviors"
+            onClicked: game.currentScene = behaviorScene
+        }
+
+        MenuButton {
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: bigFontSize
+            text: "Car"
+            onClicked: game.currentScene = carScene
+        }
     }
 }
-
