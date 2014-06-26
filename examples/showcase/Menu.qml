@@ -52,5 +52,12 @@ Item {
             text: "Car"
             onClicked: game.currentScene = carScene
         }
+        MenuButton {
+            anchors.horizontalCenter: parent.horizontalCenter
+            height: bigFontSize
+            text: "Viewport"
+            onClicked: game.currentScene = viewportScene
+        }
     }
+
 }
