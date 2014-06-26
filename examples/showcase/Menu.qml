@@ -59,5 +59,4 @@ Item {
             onClicked: game.currentScene = viewportScene
         }
     }
-
 }

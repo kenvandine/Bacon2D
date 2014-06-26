@@ -41,15 +41,12 @@ Item {
                     }
                 }
 
-
                 MenuButton {
                     anchors.horizontalCenter: parent.horizontalCenter
                     height: 128
                     text: "Bacon2D"
                 }
             }
-
-
         }
 
         CannonScene {
