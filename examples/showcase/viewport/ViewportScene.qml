@@ -16,19 +16,8 @@ Scene {
     }
 
     Image {
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-        }
-
-        source: "images/Tiles/dirt.png"
-        fillMode: Image.TileHorizontally
-    }
-
-    Image {
         anchors.fill: parent
-        source: "../images/wall.jpg"
+        source: "images/stars.png"
         fillMode: Image.Tile
     }
 
