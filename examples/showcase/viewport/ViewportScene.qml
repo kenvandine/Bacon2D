@@ -25,7 +25,7 @@ Scene {
         id: red
         y: parent.height / 2
         player: "p1"
-        hstep: 5
+        hstep: 3
     }
 
     Player {
@@ -33,6 +33,6 @@ Scene {
         y: parent.height / 2
         x: parent.width/2
         player: "p2"
-        vstep: 5
+        vstep: 3
     }
 }
