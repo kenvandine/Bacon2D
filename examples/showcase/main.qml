@@ -25,29 +25,18 @@ Item {
             visible: !game.currentScene || game.currentScene === parallaxScene
             Column {
                 anchors.centerIn: parent
-                Rectangle {
+                Image {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    color: "white"
-                    radius: 5
-                    height: 200
-                    width: 300
-
-                    Image {
-                        anchors.centerIn: parent
-                        height: 200
-                        fillMode: Image.PreserveAspectFit
-                        //source: "images/pig-big.png"
-                        source: "images/bacon2d-logo-1.png"
-                    }
+                    width: 200
+                    fillMode: Image.PreserveAspectFit
+                    source: "images/pig-big.png"
                 }
 
-                /*
                 MenuButton {
                     anchors.horizontalCenter: parent.horizontalCenter
-                    height: 128
+                    height: 64
                     text: "Bacon2D"
                 }
-                */
             }
         }
 

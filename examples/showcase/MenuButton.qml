@@ -17,18 +17,18 @@ Item {
         radius: 5
         opacity: 0.8
     }
+
     FontLoader { id: dPuntillasFont; source: "fonts/d-puntillas-D-to-tiptoe.ttf" }
-    //FontLoader { id: ubuntuFont; source: "fonts/Ubuntu-B.ttf" }
 
     Text {
         anchors.centerIn: parent
         color: "white"
         font.family: dPuntillasFont.name
-        //font.family: ubuntuFont.name
         font.bold: true
         font.pointSize: parent.height / 2
         text: menuButton.text
     }
+
     MouseArea {
         id: area
         anchors.fill: parent
