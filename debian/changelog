@@ -1,3 +1,10 @@
+bacon2d (0.90.1) utopic; urgency=medium
+
+  * debian/control
+    - build depend on qtdeclarative5-dev-tools
+
+ -- Ken VanDine <ken.vandine@canonical.com>  Mon, 14 Jul 2014 22:57:49 -0400
+
 bacon2d (0.90) utopic; urgency=medium
 
   * New snapshot
