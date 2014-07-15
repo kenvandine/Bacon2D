@@ -9,7 +9,7 @@ Build-Depends: debhelper (>= 9),
                qtdeclarative5-qtquick2-plugin,
 Standards-Version: 3.9.5
 Section: libs
-Homepage:  http://bacon2d.github.io/Bacon2D
+Homepage:  http://bacon2d.com
 
 Package: qtdeclarative5-bacon2d1.0
 Section: libs
@@ -17,5 +17,5 @@ Architecture: any
 Depends: ${shlibs:Depends},
          ${misc:Depends},
 Description: 2D Game Engine for QML
- Bacon2D is a framework to ease 2d game development, providing ready-to-use 
+ Bacon2D is a framework to ease 2D game development, providing ready-to-use
  QML elements representing basic game entities needed by most of games.
