@@ -57,15 +57,89 @@
    mass properties after an entity is constructed.
 */
 Entity::Entity(Scene *parent)
-    : Box2DBody(parent)
+    : QQuickItem(parent)
     , m_updateInterval(0)
     , m_scene(0)
     , m_behavior(0)
+    , m_body(0)
 {
+    if (!m_body) {
+        m_body = new Box2DBody(this);
+        //m_body->setParentItem(this);
+        //m_body->setTarget(this);
+    }
 }
 
 Entity::~Entity()
 {
+}
+
+void Entity::initializeEntities(QQuickItem *parent)
+{
+    qDebug() << Q_FUNC_INFO;
+    qDebug () << "Property" << property("_Box2DBody");
+    if (!m_scene)
+        return;
+
+    QQuickItem *item;
+    foreach (item, parent->childItems()) {
+        if (Entity *entity = dynamic_cast<Entity *>(item)) {
+            entity->setScene(m_scene);
+            if (m_scene->physics()) {
+                //entity->body()->setParentItem(entity);
+                //entity->body()->setWorld(m_scene->world());
+                entity->body()->setTarget(entity);
+            }
+        }
+        if (m_scene->physics()) {
+            if (Box2DBody *body = dynamic_cast<Box2DBody *>(item)) {
+                qDebug() << Q_FUNC_INFO << "Has body";
+                //body->setWorld(m_scene->world());
+                body->setTarget(this);
+            }
+        }
+        qDebug () << "Property" << item->property("_Box2DBody");
+        initializeEntities(item);
+    }
+}
+
+void Entity::componentComplete()
+{
+    QQuickItem::componentComplete();
+
+    initializeEntities(this);
+
+    //if (m_body)
+    //    m_body->componentComplete();
+}
+
+void Entity::itemChange(ItemChange change, const ItemChangeData &data)
+{
+    if (!m_scene)
+        return;
+
+    if (isComponentComplete() && change == ItemChildAddedChange) {
+        QQuickItem *child = data.item;
+        if (Entity *entity = dynamic_cast<Entity *>(child)) {
+            entity->setScene(m_scene);
+            if (m_scene->physics()) {
+                qDebug() << Q_FUNC_INFO << "Has physics";
+                //entity->body()->setParentItem(entity);
+                //entity->body()->setWorld(m_scene->world());
+                entity->body()->setTarget(entity);
+            }
+        }
+        if (m_scene->physics()) {
+            if (Box2DBody *body = dynamic_cast<Box2DBody *>(child)) {
+                qDebug() << Q_FUNC_INFO << "Has body";
+                //body->setWorld(m_scene->world());
+                body->setTarget(this);
+            }
+        }
+        initializeEntities(child);
+    }
+
+    QQuickItem::itemChange(change, data);
 }
 
 void Entity::update(const int &delta)
@@ -145,6 +219,15 @@ void Entity::setBehavior(Behavior *behavior)
     m_behavior = behavior;
 
     emit behaviorChanged();
+}
+
+/*!
+  \qmlproperty Body Entity::body
+  \brief This property holds the \l Body
+*/
+Box2DBody *Entity::body() const
+{
+    return m_body;
 }
 
 /*!

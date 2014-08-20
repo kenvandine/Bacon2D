@@ -33,13 +33,14 @@ class Game;
 class Scene;
 class Behavior;
 
-class Entity : public Box2DBody
+class Entity : public QQuickItem
 {
     Q_OBJECT
 
     Q_PROPERTY(int updateInterval READ updateInterval WRITE setUpdateInterval NOTIFY updateIntervalChanged)
     Q_PROPERTY(Game *game READ game)
     Q_PROPERTY(Behavior *behavior READ behavior WRITE setBehavior NOTIFY behaviorChanged)
+    Q_PROPERTY(Box2DBody *body READ body)
 
 public:
     Entity(Scene *parent = 0);
@@ -56,6 +57,8 @@ public:
     Behavior *behavior() const;
     void setBehavior(Behavior *behavior);
 
+    Box2DBody *body() const;
+
     virtual void update(const int &delta);
 
     void initialize(Box2DWorld *world);
@@ -64,11 +67,17 @@ signals:
     void updateIntervalChanged();
     void behaviorChanged();
 
+protected:
+    virtual void componentComplete();
+    virtual void itemChange(ItemChange change, const ItemChangeData &data);
+    void initializeEntities(QQuickItem *parent);
+
 private:
     int m_updateInterval;
     QTime m_updateTime;
     Scene *m_scene;
     Behavior *m_behavior;
+    Box2DBody *m_body;
 };
 
 #endif /* _ENTITY_H_ */

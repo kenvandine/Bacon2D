@@ -46,7 +46,7 @@ Game {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                ball.applyLinearImpulse(
+                ball.body.applyLinearImpulse(
                             Qt.point((mouseX - ball.x),
                                      (mouseY - ball.y)),
                             Qt.point(ball.x, ball.y))

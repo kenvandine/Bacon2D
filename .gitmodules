@@ -1,4 +1,4 @@
 [submodule "3rdparty/qml-box2d"]
 	path = 3rdparty/qml-box2d
-	url = git@github.com:qml-box2d/qml-box2d.git
-	branch = master
+        url = https://github.com/bjorn/qml-box2d.git
+	branch = body-target

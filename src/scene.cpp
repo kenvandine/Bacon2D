@@ -270,7 +270,7 @@ void Scene::createWorld()
 {
     if (m_physics && !m_world) {
         m_world = new Box2DWorld(this);
-        m_world->setParentItem(this);
+        //m_world->setParentItem(this);
         m_world->setRunning(m_running);
         emit worldChanged();
     }
@@ -472,14 +472,19 @@ void Scene::rayCast(Box2DRayCast *rayCast, const QPointF &point1, const QPointF 
 
 void Scene::initializeEntities(QQuickItem *parent)
 {
+    qDebug () << Q_FUNC_INFO;
     QQuickItem *item;
     foreach (item, parent->childItems()) {
-        if (Entity *entity = dynamic_cast<Entity *>(item))
+        if (Entity *entity = dynamic_cast<Entity *>(item)) {
             entity->setScene(this);
-        if (m_physics && m_world) {
+            //entity->body()->setTarget(entity);
+        }
+        if (m_physics) {
+            qDebug () << Q_FUNC_INFO << "Has physics";
             if (Box2DBody *body = dynamic_cast<Box2DBody *>(item)) {
-                body->setParent(m_world);
-                body->initialize(m_world);
+                qDebug () << Q_FUNC_INFO << "Has body";
+                //body->setParent(m_world);
+                //body->setWorld(m_world);
             }
         }
         initializeEntities(item);
@@ -490,6 +495,12 @@ void Scene::componentComplete()
 {
     QQuickItem::componentComplete();
 
+    if (m_world) {
+        qDebug () << Q_FUNC_INFO << "Has world";
+        foreach (QQuickItem *item, childItems()) {
+            item->setParentItem(m_world);
+        }
+    }
     initializeEntities(this);
 
     if (m_world)
@@ -498,16 +509,27 @@ void Scene::componentComplete()
 
 void Scene::itemChange(ItemChange change, const ItemChangeData &data)
 {
+    qDebug() << Q_FUNC_INFO;
     if (isComponentComplete() && change == ItemChildAddedChange) {
         QQuickItem *child = data.item;
+        if (Box2DWorld *w = dynamic_cast<Box2DWorld *>(child)) {
+            qDebug() << Q_FUNC_INFO << "Is world";
+            return;
+        }
+        //if (m_world) {
+        //    child->setParentItem(m_world);
+        //    qDebug() << Q_FUNC_INFO << "Setting parent";
+        //}
         if (Entity *entity = dynamic_cast<Entity *>(child))
             entity->setScene(this);
+        /*
         if (m_physics && m_world) {
             if (Box2DBody *body = dynamic_cast<Box2DBody *>(child)) {
-                body->setParent(m_world);
-                body->initialize(m_world);
+                //body->setParent(m_world);
+                body->setWorld(m_world);
             }
         }
+        */
         initializeEntities(child);
     }
 
