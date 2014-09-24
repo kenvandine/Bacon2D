@@ -61,6 +61,9 @@ QMLFILES += BoxBody.qml \
             EdgeBody.qml \
             ImageBoxBody.qml \
             PolygonBody.qml \
+            ScreenBoundaries.qml \
+            PhysicsItem.qml \
+            RectangleBoxBody.qml \
             qmldir  
 
 qmlpluginfiles.path = $$target.path
