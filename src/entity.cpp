@@ -61,8 +61,25 @@ Entity::Entity(Scene *parent)
     , m_updateInterval(0)
     , m_scene(0)
     , m_behavior(0)
-    , m_body(0)
+    , m_body(new Box2DBody(this))
 {
+    //if (m_body) {
+        //m_body = new Box2DBody();
+        //m_body->setTarget(this);
+    //}
+
+    if (m_body) {
+        connect(m_body, SIGNAL(linearDampingChanged()), this, SIGNAL(linearDampingChanged()));
+        connect(m_body, SIGNAL(angularDampingChanged()), this, SIGNAL(angularDampingChanged()));
+        connect(m_body, SIGNAL(bodyTypeChanged()), this, SIGNAL(bodyTypeChanged()));
+        connect(m_body, SIGNAL(bulletChanged()), this, SIGNAL(bulletChanged()));
+        connect(m_body, SIGNAL(sleepingAllowedChanged()), this, SIGNAL(sleepingAllowedChanged()));
+        connect(m_body, SIGNAL(fixedRotationChanged()), this, SIGNAL(fixedRotationChanged()));
+        connect(m_body, SIGNAL(linearVelocityChanged()), this, SIGNAL(linearVelocityChanged()));
+        connect(m_body, SIGNAL(angularVelocityChanged()), this, SIGNAL(angularVelocityChanged()));
+        connect(m_body, SIGNAL(gravityScaleChanged()), this, SIGNAL(gravityScaleChanged()));
+        connect(m_body, SIGNAL(positionChanged()), this, SIGNAL(positionChanged()));
+    }
 }
 
 Entity::~Entity()
@@ -84,6 +101,7 @@ void Entity::initializeEntities(QQuickItem *parent)
 
 void Entity::componentComplete()
 {
+    /*
     Box2DBody *body = this->findChild<Box2DBody *>();
     if (this->m_body && body)
         qWarning() << "Entity already has Body";
@@ -91,6 +109,9 @@ void Entity::componentComplete()
         body->setTarget(this);
         this->m_body = body;
     }
+    */
+    //m_body->setWorld(m_scene->world());
+    m_body->setTarget(this);
     QQuickItem::componentComplete();
 
     initializeEntities(this);
@@ -199,6 +220,304 @@ Box2DBody *Entity::body() const
 {
     return m_body;
 }
+
+
+/* BEGIN */
+
+
+/* Box2DBody functions */
+float Entity::linearDamping() const
+{
+    if (!m_body)
+        return float(0);
+    return m_body->linearDamping();
+}
+
+void Entity::setLinearDamping(float linearDamping)
+{
+    if (!m_body)
+        return;
+    return m_body->setLinearDamping(linearDamping);
+}
+
+float Entity::angularDamping() const
+{
+    if (!m_body)
+        return float(0);
+    return m_body->angularDamping();
+}
+
+void Entity::setAngularDamping(float angularDamping)
+{
+    if (!m_body)
+        return;
+    return m_body->setAngularDamping(angularDamping);
+}
+
+Entity::BodyType Entity::bodyType() const
+{
+    if (!m_body)
+        return static_cast<Entity::BodyType>(0);
+    return static_cast<Entity::BodyType>(m_body->bodyType());
+}
+
+/* FIXME
+void Entity::setBodyType(BodyType bodyType)
+{
+    if (!m_body)
+        return;
+    return m_body->setBodyType(static_cast<Box2DBody::BodyType>(bodyType));
+}
+*/
+
+void Entity::setBodyType(BodyType bodyType)
+{
+    if (!m_body)
+        return;
+    m_body->setBodyType(static_cast<Box2DBody::BodyType>(bodyType));
+}
+
+bool Entity::isBullet() const
+{
+    if (!m_body)
+        return false;
+    return m_body->isBullet();
+}
+
+void Entity::setBullet(bool bullet)
+{
+    if (!m_body)
+        return;
+    return m_body->setBullet(bullet);
+}
+
+bool Entity::sleepingAllowed() const
+{
+    if (!m_body)
+        return false;
+    return m_body->sleepingAllowed();
+}
+
+void Entity::setSleepingAllowed(bool sleepingAllowed)
+{
+    if (!m_body)
+        return;
+    return m_body->setSleepingAllowed(sleepingAllowed);
+}
+
+bool Entity::fixedRotation() const
+{
+    if (!m_body)
+        return false;
+    return m_body->fixedRotation();
+}
+
+void Entity::setFixedRotation(bool fixedRotation)
+{
+    if (!m_body)
+        return;
+    return m_body->setFixedRotation(fixedRotation);
+}
+
+bool Entity::isActive() const
+{
+    if (!m_body)
+        return false;
+    return m_body->isActive();
+}
+
+void Entity::setActive(bool active)
+{
+    if (!m_body)
+        return;
+    m_body->setActive(active);
+}
+
+bool Entity::isAwake() const
+{
+    if (!m_body)
+        return false;
+    return m_body->isAwake();
+}
+
+void Entity::setAwake(bool awake)
+{
+    if (!m_body)
+        return;
+    m_body->setAwake(awake);
+}
+
+QPointF Entity::linearVelocity() const
+{
+    if (!m_body)
+        return QPointF();
+    return m_body->linearVelocity();
+}
+
+void Entity::setLinearVelocity(const QPointF &velocity)
+{
+    if (!m_body)
+        return;
+    return m_body->setLinearVelocity(velocity);
+}
+
+float Entity::angularVelocity() const
+{
+    if (!m_body)
+        return float(0);
+    return m_body->angularVelocity();
+}
+
+void Entity::setAngularVelocity(float velocity)
+{
+    if (!m_body)
+        return;
+    return m_body->setAngularVelocity(velocity);
+}
+
+float Entity::gravityScale() const
+{
+    if (!m_body)
+        return float(0);
+    return m_body->gravityScale();
+}
+
+void Entity::setGravityScale(float gravityScale)
+{
+    if (!m_body)
+        return;
+    return m_body->setGravityScale(gravityScale);
+}
+
+QQmlListProperty<Box2DFixture> Entity::fixtures()
+{
+    //if (!m_body)
+    //    return NULL;
+    return m_body->fixtures();
+}
+
+void Entity::applyForce(const QPointF &force, const QPointF &point)
+{
+    if (!m_body)
+        return;
+    m_body->applyForce(force, point);
+}
+
+void Entity::applyForceToCenter(const QPointF &force)
+{
+    if (!m_body)
+        return;
+    m_body->applyForceToCenter(force);
+}
+
+void Entity::applyTorque(qreal torque)
+{
+    if (!m_body)
+        return;
+    m_body->applyTorque(torque);
+}
+
+void Entity::applyLinearImpulse(const QPointF &impulse, const QPointF &point)
+{
+    if (!m_body)
+        return;
+    m_body->applyLinearImpulse(impulse, point);
+}
+
+void Entity::applyAngularImpulse(qreal impulse)
+{
+    if (!m_body)
+        return;
+    m_body->applyAngularImpulse(impulse);
+}
+
+QPointF Entity::getWorldCenter() const
+{
+    if (!m_body)
+        return QPointF();
+    return m_body->getWorldCenter();
+}
+
+QPointF Entity::getLocalCenter() const
+{
+    if (!m_body)
+        return QPointF();
+    return m_body->getLocalCenter();
+}
+
+float Entity::getMass() const
+{
+    if (!m_body)
+        return float(0);
+    return m_body->getMass();
+}
+
+void Entity::resetMassData()
+{
+    if (!m_body)
+        return;
+    m_body->resetMassData();
+}
+
+float Entity::getInertia() const
+{
+    if (!m_body)
+        return float(0);
+    return m_body->getInertia();
+}
+
+QPointF Entity::toWorldPoint(const QPointF &localPoint) const
+{
+    if (!m_body)
+        return QPointF();
+    return m_body->toWorldPoint(localPoint);
+}
+
+QPointF Entity::toWorldVector(const QPointF &localVector) const
+{
+    if (!m_body)
+        return QPointF();
+    return m_body->toWorldVector(localVector);
+}
+
+QPointF Entity::toLocalPoint(const QPointF &worldPoint) const
+{
+    if (!m_body)
+        return QPointF();
+    return m_body->toLocalPoint(worldPoint);
+}
+
+QPointF Entity::toLocalVector(const QPointF &worldVector) const
+{
+    if (!m_body)
+        return QPointF();
+    return m_body->toLocalVector(worldVector);
+}
+
+QPointF Entity::getLinearVelocityFromWorldPoint(const QPointF &point) const
+{
+    if (!m_body)
+        return QPointF();
+    return m_body->getLinearVelocityFromWorldPoint(point);
+}
+
+QPointF Entity::getLinearVelocityFromLocalPoint(const QPointF &point) const
+{
+    if (!m_body)
+        return QPointF();
+    return m_body->getLinearVelocityFromLocalPoint(point);
+}
+
+void Entity::addFixture(Box2DFixture *fixture)
+{
+    if (!m_body)
+        return;
+    return m_body->addFixture(fixture);
+}
+
+
+
+/* END */
 
 /*!
   \qmlproperty enumeration Entity::bodyType
