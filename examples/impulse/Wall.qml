@@ -3,8 +3,8 @@ import Bacon2D 1.0
 
 Entity {
     id: wall
-    BoxBody {
-        bodyType: Body.Static
+    bodyType: Body.Static
+    fixtures: Box {
         width: wall.width
         height: wall.height
     }
