@@ -61,13 +61,9 @@ Entity::Entity(Scene *parent)
     , m_updateInterval(0)
     , m_scene(0)
     , m_behavior(0)
-    , m_body(new Box2DBody(this))
+    , m_body(0)
 {
-    //if (m_body) {
-        //m_body = new Box2DBody();
-        //m_body->setTarget(this);
-    //}
-
+    /*
     if (m_body) {
         connect(m_body, SIGNAL(linearDampingChanged()), this, SIGNAL(linearDampingChanged()));
         connect(m_body, SIGNAL(angularDampingChanged()), this, SIGNAL(angularDampingChanged()));
@@ -80,6 +76,7 @@ Entity::Entity(Scene *parent)
         connect(m_body, SIGNAL(gravityScaleChanged()), this, SIGNAL(gravityScaleChanged()));
         connect(m_body, SIGNAL(positionChanged()), this, SIGNAL(positionChanged()));
     }
+    */
 }
 
 Entity::~Entity()
@@ -95,23 +92,22 @@ void Entity::initializeEntities(QQuickItem *parent)
     foreach (item, parent->childItems()) {
         if (Entity *entity = dynamic_cast<Entity *>(item))
             entity->setScene(m_scene);
+        if (m_scene->physics() && m_scene->world()) {
+            if (Box2DBody *body = dynamic_cast<Box2DBody *>(item))
+                body->setWorld(m_scene->world());
+        }
         initializeEntities(item);
     }
 }
 
 void Entity::componentComplete()
 {
-    /*
     Box2DBody *body = this->findChild<Box2DBody *>();
     if (this->m_body && body)
         qWarning() << "Entity already has Body";
     else if (body) {
-        body->setTarget(this);
         this->m_body = body;
     }
-    */
-    //m_body->setWorld(m_scene->world());
-    m_body->setTarget(this);
     QQuickItem::componentComplete();
 
     initializeEntities(this);
@@ -226,6 +222,7 @@ Box2DBody *Entity::body() const
 
 
 /* Box2DBody functions */
+/* FIXME
 float Entity::linearDamping() const
 {
     if (!m_body)
@@ -260,6 +257,7 @@ Entity::BodyType Entity::bodyType() const
         return static_cast<Entity::BodyType>(0);
     return static_cast<Entity::BodyType>(m_body->bodyType());
 }
+*/
 
 /* FIXME
 void Entity::setBodyType(BodyType bodyType)
@@ -270,6 +268,7 @@ void Entity::setBodyType(BodyType bodyType)
 }
 */
 
+/* FIXME
 void Entity::setBodyType(BodyType bodyType)
 {
     if (!m_body)
@@ -514,6 +513,7 @@ void Entity::addFixture(Box2DFixture *fixture)
         return;
     return m_body->addFixture(fixture);
 }
+*/
 
 
 

@@ -2,6 +2,7 @@ module Bacon2D
 plugin bacon2dplugin
 typeinfo plugins.qmltypes
 
+Entity 1.0 Entity.qml
 BoxBody 1.0 BoxBody.qml
 ChainBody 1.0 ChainBody.qml
 CircleBody 1.0 CircleBody.qml

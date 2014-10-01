@@ -55,7 +55,8 @@ QMAKE_POST_LINK = $$QMAKE_COPY $$PWD/qmldir $$OUT_PWD/imports/Bacon2D
 !isEmpty(QTPATH): target.path = $$QTPATH/imports/$$TARGETPATH
 else: target.path = $$[QT_INSTALL_QML]/$$replace(TARGETPATH, \\., /).$$API_VER
 
-QMLFILES += BoxBody.qml \
+QMLFILES += Entity.qml \
+            BoxBody.qml \
             ChainBody.qml \
             CircleBody.qml \
             EdgeBody.qml \
