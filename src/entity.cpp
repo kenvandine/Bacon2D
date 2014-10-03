@@ -85,6 +85,7 @@ Entity::~Entity()
 
 void Entity::initializeEntities(QQuickItem *parent)
 {
+    qDebug() << Q_FUNC_INFO;
     if (!m_scene)
         return;
 
@@ -93,8 +94,10 @@ void Entity::initializeEntities(QQuickItem *parent)
         if (Entity *entity = dynamic_cast<Entity *>(item))
             entity->setScene(m_scene);
         if (m_scene->physics() && m_scene->world()) {
-            if (Box2DBody *body = dynamic_cast<Box2DBody *>(item))
+            if (Box2DBody *body = dynamic_cast<Box2DBody *>(item)) {
+                qDebug() << Q_FUNC_INFO << "Setting world";
                 body->setWorld(m_scene->world());
+            }
         }
         initializeEntities(item);
     }
@@ -106,6 +109,7 @@ void Entity::componentComplete()
     if (this->m_body && body)
         qWarning() << "Entity already has Body";
     else if (body) {
+        qDebug() << Q_FUNC_INFO << "Found Body";
         this->m_body = body;
     }
     QQuickItem::componentComplete();
@@ -122,6 +126,10 @@ void Entity::itemChange(ItemChange change, const ItemChangeData &data)
         QQuickItem *child = data.item;
         if (Entity *entity = dynamic_cast<Entity *>(child)) {
             entity->setScene(m_scene);
+        }
+        if (m_scene->physics() && m_scene->world()) {
+            if (Box2DBody *body = dynamic_cast<Box2DBody *>(child))
+                body->setWorld(m_scene->world());
         }
         initializeEntities(child);
     }

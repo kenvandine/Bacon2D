@@ -22,14 +22,15 @@ Game {
                 width: 20
                 height: 20
                 sleepingAllowed: true
-                bodyType: Entity.Dynamic
+                bodyType: Body.Dynamic
                 property bool burn: false
+                //FIXME: we shouldn't need to set world
+                body.world: scene.world
                 function doDestroy() {
                     destroy();
                 }
                 fixtures: Circle {
                     property bool isBall: true
-                    anchors.fill: parent
                     radius: 10
                     density: 0.5
                     friction: 1
@@ -96,7 +97,7 @@ Game {
         Entity {
             id: ground
             height: 40
-            bodyType: Entity.Static
+            bodyType: Body.Static
             anchors {
                 left: parent.left
                 right: parent.right
@@ -109,7 +110,6 @@ Game {
                     Qt.point(0,parent.height)
 
                 ]
-                anchors.fill: parent
                 friction: 0.2
                 density: 0.5
             }
@@ -185,7 +185,7 @@ Game {
             y: 480
             height: 50
             width: 40
-            bodyType: Entity.Kinematic
+            bodyType: Body.Kinematic
             fixtures: [Polygon {
                     vertices: [
                         Qt.point(0,0),
@@ -286,7 +286,7 @@ Game {
             running: true
             repeat: true
             onTriggered: {
-                var newBall = ballComponent.createObject(scene.world);
+                var newBall = ballComponent.createObject(scene);
                 newBall.x = 100 + (Math.random() * 600);
                 newBall.y = 50;
             }

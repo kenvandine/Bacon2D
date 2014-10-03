@@ -8,53 +8,13 @@ Game {
     height: 600
     currentScene: scene
 
-    Component {
-        id: rectComponent
-        RectangleBoxBody {
-            id: rect
-            width: 20
-            height: 20
-
-            world: scene.world
-            bodyType: Body.Dynamic
-
-            property variant colors : [
-                "#FF0000","#FF8000","#FFFF00","#00FF00",
-                "#0080FF","#0000FF","#FF00FF","#FFFFFF"
-            ]
-            property int colorIndex : 0
-            property bool animateDeletion: false
-
-            property bool isBall: true
-            density: 0.5
-            friction: 1
-            restitution: 0.2
-
-            border.color: "#999"
-            color: colors[colorIndex]
-            radius: 3
-
-            PropertyAnimation {
-                target: rect
-                property: "opacity"
-                duration: 1000
-                to: 0
-                easing.type: Easing.InCubic
-                running: animateDeletion
-                onRunningChanged: {
-                    if (!running)
-                        rect.destroy();
-                }
-            }
-        }
-    }
-
     Scene {
         id: scene
         anchors.fill: parent
         physics: true
 
         onPreSolve: {
+            print (onPreSolve);
             var targetA = contact.fixtureA.getBody().target;
             var targetB = contact.fixtureB.getBody().target;
             if (targetA.isBall && contact.fixtureB === topBeltFixture)
@@ -62,24 +22,60 @@ Game {
             else if (targetB.isBall && contact.fixtureA === topBeltFixture)
                 contact.tangentSpeed = 3.0;
         }
-    }
 
-    Item {
-        id: physicsRoot
-        anchors.fill: parent
+        Component {
+            id: rectComponent
+            Entity {
+                id: rect
+                width: 20
+                height: 20
 
-        Item {
+                bodyType: Body.Dynamic
+                //FIXME: we shouldn't need to set world
+                body.world: scene.world
+
+                property variant colors : [
+                    "#FF0000","#FF8000","#FFFF00","#00FF00",
+                    "#0080FF","#0000FF","#FF00FF","#FFFFFF"
+                ]
+                property int colorIndex : 0
+                property bool animateDeletion: false
+
+                property bool isBall: true
+                fixtures: Box {
+                    density: 0.5
+                    friction: 1
+                    restitution: 0.2
+                }
+
+                Rectangle {
+                    anchors.fill: parent
+                    border.color: "#999"
+                    color: colors[colorIndex]
+                    radius: 3
+
+                    PropertyAnimation {
+                        target: rect
+                        property: "opacity"
+                        duration: 1000
+                        to: 0
+                        easing.type: Easing.InCubic
+                        running: animateDeletion
+                        onRunningChanged: {
+                            if (!running)
+                                rect.destroy();
+                        }
+                    }
+                }
+            }
+        }
+
+        Wall {
             id: topWall
             height: 10
             y: -10
             anchors.left: parent.left
             anchors.right: parent.right
-            BoxBody {
-                target: topWall
-                world: scene.world
-                width: topWall.width
-                height: topWall.height
-            }
         }
 
         Wall {
@@ -104,10 +100,9 @@ Game {
             }
         }
 
-        PhysicsItem {
+        Entity {
             id: ground
             height: 40
-            world: scene.world
             anchors {
                 left: parent.left
                 right: parent.right
@@ -126,11 +121,10 @@ Game {
             }
         }
 
-        PhysicsItem {
+        Entity {
             id: drivingWheel
             width: 48
             height: 48
-            world: scene.world
             bodyType: Body.Dynamic
             fixtures: Circle {
                 radius: 24
@@ -142,11 +136,10 @@ Game {
             }
         }
 
-        PhysicsItem {
+        Entity {
             id: drivenWheel
             width: 48
             height: 48
-            world: scene.world
             bodyType: Body.Dynamic
             fixtures: Circle {
                 radius: 24
@@ -158,13 +151,12 @@ Game {
             }
         }
 
-        PhysicsItem {
+        Entity {
             id: topBelt
             x: 65
             y: 500
             width: 600
             height: 5
-            world: scene.world
             fixtures: Box {
                 id: topBeltFixture
                 width: topBelt.width
@@ -208,13 +200,12 @@ Game {
             motorSpeed: 180
             maxMotorTorque: 100
         }
-        PhysicsItem {
+        Entity {
             id: tube
             x: 500
             y: 10
             width: 250
             height: 450
-            world: scene.world
             fixtures: [
                 Chain {
                     vertices: [
@@ -268,41 +259,46 @@ Game {
             }
         }
 
-        BoxBody {
+        Entity {
             id: flowVertical
             x: 680
             y: 60
             width: 60
             height: 500
-            world: scene.world
-            sensor: true
-            onBeginContact: {
-                other.getBody().gravityScale = -2;
+            fixtures: Box {
+                sensor: true
+                onBeginContact: {
+                    other.getBody().gravityScale = -2;
+                }
             }
         }
-        BoxBody {
+
+        Entity {
             id: flowHorizontal
             x: 500
             y: 10
             width: 240
             height: 60
-            world: scene.world
-            sensor: true
-            onBeginContact: {
-                var body = other.getBody();
-                body.gravityScale = 0.5;
-                body.applyLinearImpulse(Qt.point(-5,0), Qt.point(24,24));
-            }
-            onEndContact: {
-                var body = other.getBody();
-                body.gravityScale = 1;
-                body.applyForce(Qt.point(5,0), Qt.point(24,24));
-                var rect = body.target
-                var index = rect.colorIndex;
-                index ++;
-                rect.colorIndex = index;
-                if ((index + 1) === rect.colors.length)
-                    rect.animateDeletion = true;
+            fixtures: Box {
+                sensor: true
+                onBeginContact: {
+                    print ("onBeginContact");
+                    var body = other.getBody();
+                    body.gravityScale = 0.5;
+                    body.applyLinearImpulse(Qt.point(-5,0), Qt.point(24,24));
+                }
+                onEndContact: {
+                    print ("onEndContact");
+                    var body = other.getBody();
+                    body.gravityScale = 1;
+                    body.applyForce(Qt.point(5,0), Qt.point(24,24));
+                    var rect = body.target
+                    var index = rect.colorIndex;
+                    index ++;
+                    rect.colorIndex = index;
+                    if ((index + 1) === rect.colors.length)
+                        rect.animateDeletion = true;
+                }
             }
         }
 
@@ -331,7 +327,7 @@ Game {
             running: true
             repeat: true
             onTriggered: {
-                var newBox = rectComponent.createObject(physicsRoot);
+                var newBox = rectComponent.createObject(scene);
                 newBox.x = 60 + (Math.random() * 300);
                 newBox.y = 200;
             }

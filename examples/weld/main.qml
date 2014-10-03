@@ -15,10 +15,11 @@ Game {
             width: 20
             height:20
             sleepingAllowed: true
-			bodyType: Entity.Dynamic;
+            bodyType: Body.Dynamic;
+            //FIXME: we shouldn't need to set world
+            body.world: scene.world
             fixtures: Circle {
-                radius: parent.width / 2
-                anchors.centerIn: parent
+                radius: box.width / 2
                 density: 0.1
                 friction: 0.3
                 restitution: 0.5
@@ -37,10 +38,11 @@ Game {
         Entity {
             width: 20
             height: 20
-			z: 1
-            bodyType: Entity.Dynamic
+            z: 1
+            bodyType: Body.Dynamic
+            //FIXME: we shouldn't need to set world
+            body.world: scene.world
             fixtures: Box {
-                anchors.fill: parent
                 density: 0.2
                 friction: 0.3
             }
@@ -64,34 +66,36 @@ Game {
         id: scene
         anchors.fill: parent
         physics: true
-        onInitialized: {
+
+        Component.onCompleted: {
+        //onInitialized: {
+            print ("onInitialized");
             var prevLink = bodyA;
             for(var i = 0;i < 10;i ++) {
-                var newLink = linkComponent.createObject(scene.world);
+                var newLink = linkComponent.createObject(scene);
                 newLink.x = 350 + i * 3;
                 newLink.y = 500 - (i * 40);
                 newLink.width = 20 - i * 1.5;
                 newLink.height = 40;
-                var newJoint = linkJoint.createObject(scene.world);
+                var newJoint = linkJoint.createObject(scene);
                 if (i == 0)
                     newJoint.localAnchorA = Qt.point(bodyA.width / 2,0);
                 else
                     newJoint.localAnchorA = Qt.point(newLink.width / 2,0);
                 newJoint.localAnchorB = Qt.point(newLink.width / 2,newLink.height);
-                newJoint.bodyA = prevLink;
-                newJoint.bodyB = newLink;
+                newJoint.bodyA = prevLink.body;
+                newJoint.bodyB = newLink.body;
                 prevLink = newLink;
                 createBranch(newLink,10 - i);
             }
         }
 
-
-
         function createBranch(base,count) {
+            print ("createBranch base: " + base + " count: " + count);
             var prevLink = base;
             var angle = Math.random() * 10 - 5;
             for(var i = 0;i < count;i ++) {
-                var newLink = linkComponent.createObject(scene.world);
+                var newLink = linkComponent.createObject(scene);
                 newLink.width = 20;
                 newLink.height = 3 + count - i;
                 if (count % 2) {
@@ -101,7 +105,7 @@ Game {
                     newLink.x = prevLink.x - newLink.width;
                     newLink.y = prevLink.y - (prevLink.height / 2);
                 }
-                var newJoint = linkJoint.createObject(scene.world);
+                var newJoint = linkJoint.createObject(scene);
                 if (count % 2) {
                     newJoint.localAnchorA = Qt.point(prevLink.width,prevLink.height / 2);
                     newJoint.localAnchorB = Qt.point(0,newLink.height / 2);
@@ -110,8 +114,8 @@ Game {
                     newJoint.localAnchorB = Qt.point(newLink.width,newLink.height / 2);
                 }
                 newJoint.referenceAngle = angle;
-                newJoint.bodyA = prevLink;
-                newJoint.bodyB = newLink;
+                newJoint.bodyA = prevLink.body;
+                newJoint.bodyB = newLink.body;
                 prevLink = newLink;
             }
         }
@@ -119,14 +123,13 @@ Game {
         Entity {
             id: ground
             height: 40
-            bodyType: Entity.Static
+            bodyType: Body.Static
             anchors {
                 left: parent.left
                 right: parent.right
                 bottom: parent.bottom
             }
             fixtures: Box {
-                anchors.fill: parent
                 friction: 1
                 density: 1
             }
@@ -135,6 +138,7 @@ Game {
                 color: "#DEDEDE"
             }
         }
+
         Wall {
             id: topWall
             height: 40
@@ -170,13 +174,12 @@ Game {
 
         Entity {
             id: bodyA
-            bodyType: Entity.Static
+            bodyType: Body.Static
             width: 100
             height: 20
             x: 300
             y: 540
             fixtures: Box {
-                anchors.fill: parent
             }
             Rectangle {
                 anchors.fill: parent
@@ -237,7 +240,7 @@ Game {
             running: true
             repeat: true
             onTriggered: {
-                var newBox = ballComponent.createObject(scene.world);
+                var newBox = ballComponent.createObject(scene);
                 newBox.x = 40 + (Math.random() * scene.width - 80);
                 newBox.y = 50;
             }
