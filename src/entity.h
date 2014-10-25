@@ -23,8 +23,6 @@
 #ifndef _ENTITY_H_
 #define _ENTITY_H_
 
-#include "box2dbody.h"
-
 #include <QtCore/QtGlobal>
 #include <QtCore/QTime>
 #include <QtQuick/QQuickItem>
@@ -33,7 +31,7 @@ class Game;
 class Scene;
 class Behavior;
 
-class Entity : public Box2DBody
+class Entity : public QQuickItem
 {
     Q_OBJECT
 
@@ -58,11 +56,15 @@ public:
 
     virtual void update(const int &delta);
 
-    void initialize(Box2DWorld *world);
-
 signals:
     void updateIntervalChanged();
     void behaviorChanged();
+    void bodyChanged();
+
+protected:
+    virtual void componentComplete();
+    virtual void itemChange(ItemChange change, const ItemChangeData &data);
+    void initializeEntities(QQuickItem *parent);
 
 private:
     int m_updateInterval;

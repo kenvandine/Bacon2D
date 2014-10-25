@@ -97,8 +97,6 @@ void Scene::updateEntities(QQuickItem *parent, const int &delta)
             entity->update(delta);
         else if (Layer *layer = qobject_cast<Layer *>(item))
             layer->update(delta);
-        else if (Box2DWorld *world = dynamic_cast<Box2DWorld *>(item))
-            updateEntities(world, delta);
     }
 }
 
@@ -271,7 +269,6 @@ void Scene::createWorld()
 {
     if (m_physics && !m_world) {
         m_world = new Box2DWorld(this);
-        m_world->setParentItem(this);
         m_world->setRunning(m_running);
         emit worldChanged();
     }
@@ -477,12 +474,6 @@ void Scene::initializeEntities(QQuickItem *parent)
     foreach (item, parent->childItems()) {
         if (Entity *entity = dynamic_cast<Entity *>(item))
             entity->setScene(this);
-        if (m_physics && m_world) {
-            if (Box2DBody *body = dynamic_cast<Box2DBody *>(item)) {
-                body->setParent(m_world);
-                body->initialize(m_world);
-            }
-        }
         initializeEntities(item);
     }
 }
@@ -490,7 +481,6 @@ void Scene::initializeEntities(QQuickItem *parent)
 void Scene::componentComplete()
 {
     QQuickItem::componentComplete();
-
     initializeEntities(this);
 
     if (m_world)
@@ -504,13 +494,8 @@ void Scene::itemChange(ItemChange change, const ItemChangeData &data)
 {
     if (isComponentComplete() && change == ItemChildAddedChange) {
         QQuickItem *child = data.item;
-        if (Entity *entity = dynamic_cast<Entity *>(child))
+        if (Entity *entity = dynamic_cast<Entity *>(child)) {
             entity->setScene(this);
-        if (m_physics && m_world) {
-            if (Box2DBody *body = dynamic_cast<Box2DBody *>(child)) {
-                body->setParent(m_world);
-                body->initialize(m_world);
-            }
         }
         initializeEntities(child);
     }
@@ -522,7 +507,6 @@ void Scene::onWorldChanged()
 {
     if (m_world) {
         /* Wrap signals from Box2DWorld */
-        connect(m_world, SIGNAL(initialized()), this, SIGNAL(initialized()));
         connect(m_world, SIGNAL(preSolve(Box2DContact *)), this, SIGNAL(preSolve(Box2DContact *)));
         connect(m_world, SIGNAL(postSolve(Box2DContact *)), this, SIGNAL(postSolve(Box2DContact *)));
         connect(m_world, SIGNAL(timeStepChanged()), this, SIGNAL(timeStepChanged()));

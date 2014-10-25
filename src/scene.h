@@ -137,6 +137,7 @@ signals:
 
     void enterAnimationChanged();
     void exitAnimationChanged();
+
 protected slots:
     void onDebugChanged();
     void onWorldChanged();
