@@ -13,26 +13,7 @@ Game {
         anchors.fill: parent
         physics: true
 
-        Wall {
-            id: ground
-            height: 20
-            anchors { left: parent.left; right: parent.right; top: parent.bottom }
-        }
-        Wall {
-            id: ceiling
-            height: 20
-            anchors { left: parent.left; right: parent.right; bottom: parent.top }
-        }
-        Wall {
-            id: leftWall
-            width: 20
-            anchors { right: parent.left; bottom: ground.top; top: ceiling.bottom }
-        }
-        Wall {
-            id: rightWall
-            width: 20
-            anchors { left: parent.right; bottom: ground.top; top: ceiling.bottom }
-        }
+        ScreenBoundaries {}
 
         Ball {
             id: ball
