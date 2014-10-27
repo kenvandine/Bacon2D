@@ -1,6 +1,14 @@
 import QtQuick 2.0
 import Bacon2D 1.0
 
+/*!
+  \qmltype PhysicsSprite
+  \inqmlmodule Bacon2D
+  \inherits Body
+  \brief A Sprite representation of an Entity, providing state based 
+   management of multiple SpriteAnimation animations.
+ */
+
 Sprite {
     id: item
 
