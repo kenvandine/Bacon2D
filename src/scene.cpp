@@ -519,8 +519,10 @@ void Scene::onWorldChanged()
         /* End wrapped signals from Box2DWorld */
 
         /* if debug is enabled, create a DebugDraw */
-        if (m_debug && !m_debugDraw)
+        if (m_debug && !m_debugDraw) {
             m_debugDraw = new Box2DDebugDraw(this);
+            emit debugChanged();
+        }
     }
 }
 
@@ -535,8 +537,6 @@ void Scene::onDebugChanged()
         m_debugDraw->setOpacity(0.3);
         m_debugDraw->setWidth(width());
         m_debugDraw->setHeight(height());
-        m_debugDraw->setX(x());
-        m_debugDraw->setY(y());
         m_debugDraw->setVisible(m_debug);
     }
 }
