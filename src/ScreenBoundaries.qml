@@ -9,52 +9,73 @@ import Bacon2D 1.0
 Entity {
     id: item
 
-    property variant screen: scene
     transformOrigin: Item.TopLeft
     property alias body: itemBody
 
     // Body properties
     property alias world: itemBody.world
-    property alias linearDamping: itemBody.linearDamping
-    property alias angularDamping: itemBody.angularDamping
-    property alias bodyType: itemBody.bodyType
-    property alias bullet: itemBody.bullet
-    property alias sleepingAllowed: itemBody.sleepingAllowed
-    property alias fixedRotation: itemBody.fixedRotation
-    property alias active: itemBody.active
-    property alias awake: itemBody.awake
-    property alias linearVelocity: itemBody.linearVelocity
-    property alias angularVelocity: itemBody.angularVelocity
-    property alias fixtures: itemBody.fixtures
-    property alias gravityScale: itemBody.gravityScale
 
+    // Fixture properties
+    property alias density: itemBody.density
+    property alias friction: itemBody.friction
+    property alias restitution: itemBody.restitution
+    property alias sensor: itemBody.sensor
+    property alias groupIndex: itemBody.groupIndex
 
     Body {
         id: itemBody
         world: scene.world
         target: item
+        bodyType: Body.Static
+        property var scene: item.scene
+        property real density
+        property real friction
+        property real restitution
+        property bool sensor
+        property int groupIndex
+        
         signal beginContact(Fixture other)
         signal endContact(Fixture other)
 
         Box {
-            y: screen.height
-            width: screen.width
+            y: scene.height
+            width: scene.width
             height: 32
+            density: itemBody.density
+            friction: itemBody.friction
+            restitution: itemBody.restitution
+            sensor: itemBody.sensor
+            groupIndex: itemBody.groupIndex
         }
         Box {
-            y: -32
+            y: -height
             height: 32
-            width: screen.width
+            width: scene.width
+            density: itemBody.density
+            friction: itemBody.friction
+            restitution: itemBody.restitution
+            sensor: itemBody.sensor
+            groupIndex: itemBody.groupIndex
         }
         Box {
             x: -32
             width: 32
-            height: screen.height
+            height: scene.height
+            density: itemBody.density
+            friction: itemBody.friction
+            restitution: itemBody.restitution
+            sensor: itemBody.sensor
+            groupIndex: itemBody.groupIndex
         }
         Box {
-            x: screen.width
+            x: scene.width
             width: 32
-            height: screen.height
+            height: scene.height
+            density: itemBody.density
+            friction: itemBody.friction
+            restitution: itemBody.restitution
+            sensor: itemBody.sensor
+            groupIndex: itemBody.groupIndex
         }
     }
 }
