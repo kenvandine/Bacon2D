@@ -61,6 +61,10 @@ QMAKE_POST_LINK = $$QMAKE_COPY $$PWD/qmldir $$OUT_PWD/imports/Bacon2D
 
 !isEmpty(QTPATH): target.path = $$QTPATH/imports/$$TARGETPATH
 else: target.path = $$[QT_INSTALL_QML]/$$replace(TARGETPATH, \\., /).$$API_VER
+;
+
+qmltypes.path = $$target.path
+qmltypes.extra = $$[QT_INSTALL_BINS]/qmlplugindump -notrelocatable Bacon2D $$API_VER $$OUT_PWD/imports  > $$OUT_PWD/imports/Bacon2D/plugins.qmltypes
 
 QMLFILES += PhysicsEntity.qml \
             PhysicsSprite.qml \
@@ -73,15 +77,12 @@ QMLFILES += PhysicsEntity.qml \
             ScreenBoundaries.qml \
             PhysicsItem.qml \
             RectangleBoxBody.qml \
+            plugins.qmltypes \
             qmldir
 
 qmlpluginfiles.path = $$target.path
 qmlpluginfiles.files += \
     $$QMLFILES \
     $$OUT_PWD/imports/Bacon2D/*
-
-qmltypes.path = $$target.path
-qmltypes.extra = $$[QT_INSTALL_BINS]/qmlplugindump -notrelocatable Bacon2D $$API_VER $$OUT_PWD/imports  > $$OUT_PWD/imports/Bacon2D/plugins.qmltypes
-qmltypes.files += $$OUT_PWD/imports/Bacon2D/plugins.qmltypes
 
 INSTALLS += target qmltypes qmlpluginfiles
