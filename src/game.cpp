@@ -318,11 +318,7 @@ void Game::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
     Viewport *viewport = currentScene->viewport();
 
     if (viewport && currentScene) {
-        viewport->setWidth(width());
-        viewport->setHeight(height());
-        viewport->setContentWidth(currentScene->width());
-        viewport->setContentHeight(currentScene->height());
-        viewport->updateMaxOffsets();
+        viewport->setScene(currentScene);
     }
 
     QQuickItem::geometryChanged(newGeometry, oldGeometry);
@@ -339,14 +335,9 @@ void Game::attachScene(Scene *scene)
     if (viewport) {
         viewport->setParent(this);
         viewport->setParentItem(this);
-        viewport->setScene(scene);
-        scene->setParentItem(viewport);
         viewport->setWidth(width());
         viewport->setHeight(height());
-        viewport->setContentWidth(scene->width());
-        viewport->setContentHeight(scene->height());
-        viewport->updateMaxOffsets();
-        viewport->setVisible(true);
+        viewport->setScene(scene);
     } else {
         scene->setParentItem(this);
     }
