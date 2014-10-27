@@ -152,7 +152,10 @@ Scene *Entity::scene() const
 
 void Entity::setScene(Scene *scene)
 {
+    if (m_scene == scene)
+        return;
     m_scene = scene;
+    emit sceneChanged();
 }
 
 Game *Entity::game() const

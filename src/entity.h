@@ -37,6 +37,7 @@ class Entity : public QQuickItem
 
     Q_PROPERTY(int updateInterval READ updateInterval WRITE setUpdateInterval NOTIFY updateIntervalChanged)
     Q_PROPERTY(Game *game READ game)
+    Q_PROPERTY(Scene *scene READ scene NOTIFY sceneChanged)
     Q_PROPERTY(Behavior *behavior READ behavior WRITE setBehavior NOTIFY behaviorChanged)
 
 public:
@@ -59,7 +60,7 @@ public:
 signals:
     void updateIntervalChanged();
     void behaviorChanged();
-    void bodyChanged();
+    void sceneChanged();
 
 protected:
     virtual void componentComplete();
