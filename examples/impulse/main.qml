@@ -17,8 +17,8 @@ Game {
 
         Ball {
             id: ball
-            x: parent.width /2
-            y: parent.height /2
+            x: scene.width /2
+            y: scene.height /2
             rotation: 0
             width: 100
             height: 100
@@ -33,25 +33,28 @@ Game {
                     Qt.point(ball.x, ball.y))
             }
         }
+    }
 
-        Rectangle {
-            id: debugButton
-            x: 50
-            y: 10
-            width: 120
-            height: 30
-            Text {
-                id: debugButtonText
-                text: scene.debug ? "Debug view: on" : "Debug view: off"
-                anchors.centerIn: parent
-            }
-            color: "#DEDEDE"
-            border.color: "#999"
-            radius: 5
-            MouseArea {
-                anchors.fill: parent
-                onClicked: scene.debug = !scene.debug
-            }
+    Rectangle {
+        id: debugButton
+        anchors {
+            left: parent.left
+            top: parent.top
+        }
+        z: 10
+        width: 120
+        height: 30
+        Text {
+            id: debugButtonText
+            text: scene.debug ? "Debug view: on" : "Debug view: off"
+            anchors.centerIn: parent
+        }
+        color: "#DEDEDE"
+        border.color: "#999"
+        radius: 5
+        MouseArea {
+            anchors.fill: parent
+            onClicked: scene.debug = !scene.debug
         }
     }
 }
