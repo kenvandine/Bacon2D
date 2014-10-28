@@ -21,6 +21,7 @@ Entity {
     property alias restitution: itemBody.restitution
     property alias sensor: itemBody.sensor
     property alias groupIndex: itemBody.groupIndex
+    property alias categories: itemBody.categories
 
     Body {
         id: itemBody
@@ -33,6 +34,7 @@ Entity {
         property real restitution
         property bool sensor
         property int groupIndex
+        property var categories: undefined
         
         signal beginContact(Fixture other)
         signal endContact(Fixture other)
@@ -46,6 +48,7 @@ Entity {
             restitution: itemBody.restitution
             sensor: itemBody.sensor
             groupIndex: itemBody.groupIndex
+            categories: itemBody.categories
         }
         Box {
             y: -height
@@ -56,6 +59,7 @@ Entity {
             restitution: itemBody.restitution
             sensor: itemBody.sensor
             groupIndex: itemBody.groupIndex
+            categories: itemBody.categories
         }
         Box {
             x: -32
@@ -66,6 +70,7 @@ Entity {
             restitution: itemBody.restitution
             sensor: itemBody.sensor
             groupIndex: itemBody.groupIndex
+            categories: itemBody.categories
         }
         Box {
             x: scene.width
@@ -76,6 +81,7 @@ Entity {
             restitution: itemBody.restitution
             sensor: itemBody.sensor
             groupIndex: itemBody.groupIndex
+            categories: itemBody.categories
         }
     }
 }
