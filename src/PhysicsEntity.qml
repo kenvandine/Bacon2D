@@ -28,6 +28,12 @@ Entity {
     property alias fixedRotation: itemBody.fixedRotation
     property alias awake: itemBody.awake
     property alias fixtures: itemBody.fixtures
+    function applyLinearImpulse(impulse, point) {
+        itemBody.applyLinearImpulse(impulse, point);
+    }
+    function getWorldCenter() {
+        return itemBody.getWorldCenter();
+    }
 
     /*!
       \qmlmethod void PhysicsEntity::applyForce(const QPointF force, const QPointF point)
