@@ -75,6 +75,7 @@ QMLFILES += PhysicsEntity.qml \
             ImageBoxBody.qml \
             PolygonBody.qml \
             ScreenBoundaries.qml \
+            Boundaries.qml \
             RectangleBoxBody.qml \
             plugins.qmltypes \
             qmldir

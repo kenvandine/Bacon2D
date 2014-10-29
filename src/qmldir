@@ -3,6 +3,7 @@ plugin bacon2dplugin
 typeinfo plugins.qmltypes
 
 BoxBody 1.0 BoxBody.qml
+Boundaries 1.0 Boundaries.qml
 ChainBody 1.0 ChainBody.qml
 CircleBody 1.0 CircleBody.qml
 EdgeBody 1.0 EdgeBody.qml
