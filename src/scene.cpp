@@ -28,6 +28,7 @@
 
 #include <QtCore/QtGlobal>
 #include <QtQml/QQmlEngine>
+#include "../../3rdparty/qml-box2d/box2dbody.h"
 
 /*!
   \qmltype Scene
@@ -470,11 +471,21 @@ void Scene::rayCast(Box2DRayCast *rayCast, const QPointF &point1, const QPointF 
 
 void Scene::initializeEntities(QQuickItem *parent)
 {
-    QQuickItem *item;
-    foreach (item, parent->childItems()) {
-        if (Entity *entity = dynamic_cast<Entity *>(item))
+
+
+    QQuickItem *child;
+    foreach (child, parent->childItems()) {
+        if (Entity *entity = dynamic_cast<Entity *>(child)) {
             entity->setScene(this);
-        initializeEntities(item);
+        }
+
+        if (m_physics && m_world) {
+            foreach (Box2DBody *body, child->findChildren<Box2DBody *>(QString(), Qt::FindDirectChildrenOnly)) {
+                body->setWorld(m_world);
+            }
+        }
+
+        initializeEntities(child);
     }
 }
 
@@ -492,11 +503,19 @@ void Scene::componentComplete()
 
 void Scene::itemChange(ItemChange change, const ItemChangeData &data)
 {
+
     if (isComponentComplete() && change == ItemChildAddedChange) {
         QQuickItem *child = data.item;
         if (Entity *entity = dynamic_cast<Entity *>(child)) {
             entity->setScene(this);
         }
+
+        if (m_physics && m_world) {
+            foreach (Box2DBody *body, child->findChildren<Box2DBody *>(QString(), Qt::FindDirectChildrenOnly)) {
+                body->setWorld(m_world);
+            }
+        }
+
         initializeEntities(child);
     }
 
@@ -555,6 +574,5 @@ void Scene::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry
     if (m_debug && m_debugDraw) {
         emit debugChanged();
     }
-
 }
 

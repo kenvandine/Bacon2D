@@ -10,18 +10,21 @@ Game {
 
     Scene {
         id: scene
-        anchors.fill: parent
+        //anchors.fill: parent
+        width: game.width
+        height: game.height
         physics: true
+        debug: true
 
-        ScreenBoundaries {}
+        Boundaries {}
 
         Ball {
             id: ball
-            x: scene.width /2
-            y: scene.height /2
+            x: parent.x
+            y: parent.y
             rotation: 0
-            width: 100
-            height: 100
+            width: 50
+            height: 50
         }
 
         MouseArea {
@@ -33,6 +36,42 @@ Game {
                     Qt.point(ball.x, ball.y))
             }
         }
+        Item {
+            id: innerBox
+            anchors.centerIn: scene
+            width: 300
+            height: 300
+
+            Boundaries {
+                anchors.fill: parent
+                Rectangle {
+                    anchors.fill: parent
+                    color: "black"
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    innerBall.body.applyLinearImpulse(
+                        Qt.point((mouseX - innerBall.x),
+                                 (mouseY - innerBall.y)),
+                        Qt.point(innerBall.x, innerBall.y))
+                }
+            }
+        }
+
+        Ball {
+            id: innerBall
+
+            x: innerBox.x + innerBox.width/2
+            y: innerBox.y + innerBox.height/2
+            rotation: 0
+            width: 50
+            height: 50
+        }
+
+
     }
 
     Rectangle {

@@ -15,6 +15,7 @@ Entity {
 
     // Body properties
     property alias world: itemBody.world
+    property alias target: itemBody.target
 
     property alias linearDamping: itemBody.linearDamping
     property alias angularDamping: itemBody.angularDamping

@@ -6,7 +6,7 @@ import Bacon2D 1.0
   to avoid stuff getting out.
 */
 
-Entity {
+Item {
     id: item
 
     transformOrigin: Item.TopLeft
@@ -14,6 +14,7 @@ Entity {
 
     // Body properties
     property alias world: itemBody.world
+    property alias target: itemBody.target
 
     // Fixture properties
     property alias density: itemBody.density
@@ -22,12 +23,12 @@ Entity {
     property alias sensor: itemBody.sensor
     property alias groupIndex: itemBody.groupIndex
     property alias categories: itemBody.categories
+    property var _bounds: item.parent
 
     Body {
         id: itemBody
-        world: scene.world
-        target: item
         bodyType: Body.Static
+        target: item
         property real density
         property real friction
         property real restitution
@@ -39,9 +40,9 @@ Entity {
         signal endContact(Fixture other)
 
         Box {
-            x: item.parent.x
-            y: item.parent.y + item.parent.height
-            width: item.parent.width
+            x: _bounds.x
+            y: _bounds.y + _bounds.height
+            width: _bounds.width
             height: 2
             density: itemBody.density
             friction: itemBody.friction
@@ -51,10 +52,10 @@ Entity {
             categories: itemBody.categories
         }
         Box {
-            x: item.parent.x
-            y: item.parent.y - height
+            x: _bounds.x
+            y: _bounds.y - height
             height: 2
-            width: item.parent.width
+            width: _bounds.width
             density: itemBody.density
             friction: itemBody.friction
             restitution: itemBody.restitution
@@ -63,10 +64,10 @@ Entity {
             categories: itemBody.categories
         }
         Box {
-            x: item.parent.x - width
-            y: item.parent.y
+            x: _bounds.x - width
+            y: _bounds.y
             width: 2
-            height: item.parent.height
+            height: _bounds.height
             density: itemBody.density
             friction: itemBody.friction
             restitution: itemBody.restitution
@@ -75,10 +76,10 @@ Entity {
             categories: itemBody.categories
         }
         Box {
-            x: item.parent.x + item.parent.width
-            y: item.parent.y
+            x: _bounds.x + _bounds.width
+            y: _bounds.y
             width: 2
-            height: item.parent.height
+            height: _bounds.height
             density: itemBody.density
             friction: itemBody.friction
             restitution: itemBody.restitution

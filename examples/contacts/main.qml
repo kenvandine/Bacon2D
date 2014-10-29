@@ -63,56 +63,7 @@ Game {
             }
         }
 
-        Wall {
-            id: topWall
-            height: 10
-            y: -10
-            anchors.left: parent.left
-            anchors.right: parent.right
-        }
-
-        Wall {
-            id: leftWall
-            width: 40
-            anchors {
-                left: parent.left
-                top: parent.top
-                bottom: parent.bottom
-                bottomMargin: 40
-            }
-        }
-
-        Wall {
-            id: rightWall
-            width: 40
-            anchors {
-                right: parent.right
-                top: parent.top
-                bottom: parent.bottom
-                bottomMargin: 40
-            }
-        }
-
-        PhysicsEntity {
-            id: ground
-            height: 40
-            anchors {
-                left: parent.left
-                right: parent.right
-                bottom: parent.bottom
-            }
-            fixtures: Box {
-                id: groundFixture
-                width: ground.width
-                height: ground.height
-                friction: 1
-                density: 1
-            }
-            Rectangle {
-                anchors.fill: parent
-                color: "#DEDEDE"
-            }
-        }
+        Boundaries {}
 
         PhysicsEntity {
             id: drivingWheel

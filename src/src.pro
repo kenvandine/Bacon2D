@@ -66,19 +66,19 @@ else: target.path = $$[QT_INSTALL_QML]/$$replace(TARGETPATH, \\., /).$$API_VER
 qmltypes.path = $$target.path
 qmltypes.extra = $$[QT_INSTALL_BINS]/qmlplugindump -notrelocatable Bacon2D $$API_VER $$OUT_PWD/imports  > $$OUT_PWD/imports/Bacon2D/plugins.qmltypes
 
-QMLFILES += PhysicsEntity.qml \
-            PhysicsSprite.qml \
-            BoxBody.qml \
-            ChainBody.qml \
-            CircleBody.qml \
-            EdgeBody.qml \
-            ImageBoxBody.qml \
-            PolygonBody.qml \
-            ScreenBoundaries.qml \
-            Boundaries.qml \
-            RectangleBoxBody.qml \
-            plugins.qmltypes \
-            qmldir
+QMLFILES += $$PWD/PhysicsEntity.qml \
+            $$PWD/PhysicsSprite.qml \
+            $$PWD/BoxBody.qml \
+            $$PWD/ChainBody.qml \
+            $$PWD/CircleBody.qml \
+            $$PWD/EdgeBody.qml \
+            $$PWD/ImageBoxBody.qml \
+            $$PWD/PolygonBody.qml \
+            $$PWD/ScreenBoundaries.qml \
+            $$PWD/Boundaries.qml \
+            $$PWD/RectangleBoxBody.qml \
+            $$PWD/plugins.qmltypes \
+            $$PWD/qmldir
 
 qmlpluginfiles.path = $$target.path
 qmlpluginfiles.files += \

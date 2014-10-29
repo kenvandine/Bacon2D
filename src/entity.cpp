@@ -25,6 +25,8 @@
 #include "scene.h"
 #include "game.h"
 #include "behavior.h"
+#include "../../3rdparty/qml-box2d/box2dbody.h"
+
 
 /*!
   \qmltype Entity
@@ -70,10 +72,8 @@ Entity::~Entity()
 
 void Entity::initializeEntities(QQuickItem *parent)
 {
-    qDebug() << Q_FUNC_INFO;
     if (!m_scene)
         return;
-
     QQuickItem *item;
     foreach (item, parent->childItems()) {
         if (Entity *entity = dynamic_cast<Entity *>(item))
@@ -85,6 +85,12 @@ void Entity::initializeEntities(QQuickItem *parent)
 void Entity::componentComplete()
 {
     QQuickItem::componentComplete();
+    if (m_scene && m_scene->physics() && m_scene->world()) {
+        foreach (Box2DBody *body, this->findChildren<Box2DBody *>(QString(), Qt::FindDirectChildrenOnly)) {
+            //body->setTarget(this);
+            body->setWorld(m_scene->world());
+        }
+    }
     initializeEntities(this);
 }
 
