@@ -528,7 +528,7 @@ void Scene::onWorldChanged()
 
 void Scene::onDebugChanged()
 {
-    if (m_debugDraw && m_world) {
+    if (m_debug && m_debugDraw && m_world) {
         /* Properly setup a DebugDraw */
         m_debugDraw->setWorld(m_world);
         m_debugDraw->setParentItem(this);
@@ -538,5 +538,23 @@ void Scene::onDebugChanged()
         m_debugDraw->setWidth(width());
         m_debugDraw->setHeight(height());
         m_debugDraw->setVisible(m_debug);
+    } else if (m_debugDraw) {
+        m_debugDraw->setVisible(m_debug);
     }
 }
+
+void Scene::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+{
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
+    if (newGeometry.isEmpty() || !isComponentComplete() || (newGeometry == oldGeometry))
+        return;
+
+    if (m_viewport && m_running) {
+        m_viewport->setScene(this);
+    }
+    if (m_debug && m_debugDraw) {
+        emit debugChanged();
+    }
+
+}
+

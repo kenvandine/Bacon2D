@@ -143,6 +143,7 @@ protected slots:
     void onWorldChanged();
 
 protected:
+    virtual void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
     virtual void componentComplete();
     virtual void itemChange(ItemChange change, const ItemChangeData &data);
     void updateEntities(QQuickItem *parent, const int &delta);

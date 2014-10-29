@@ -309,6 +309,7 @@ QPointF Game::mouse()
 
 void Game::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
+    QQuickItem::geometryChanged(newGeometry, oldGeometry);
     if (newGeometry.isEmpty() || !isComponentComplete() || (newGeometry == oldGeometry))
         return;
     if(m_sceneStack.isEmpty())
@@ -320,8 +321,6 @@ void Game::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
     if (viewport && currentScene) {
         viewport->setScene(currentScene);
     }
-
-    QQuickItem::geometryChanged(newGeometry, oldGeometry);
 }
 
 void Game::attachScene(Scene *scene)
