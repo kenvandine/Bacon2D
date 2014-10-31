@@ -2,6 +2,7 @@
   \qmltype PhysicsSprite
   \inqmlmodule Bacon2D
   \inherits Sprite 
+  \ingroup physics
   \brief A Sprite representation of an Entity, providing state based
    management of multiple SpriteAnimation animations.
 */

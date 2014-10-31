@@ -2,6 +2,7 @@
   \qmltype PhysicsEntity
   \inqmlmodule Bacon2D
   \inherits Entity 
+  \ingroup physics
   \brief An \l Entity with that participates in the \l Box2D physics world
 */
 
