@@ -1,14 +1,6 @@
 import QtQuick 2.0
 import Bacon2D 1.0
 
-/*!
-  \qmltype PhysicsSprite
-  \inqmlmodule Bacon2D
-  \inherits Body
-  \brief A Sprite representation of an Entity, providing state based 
-   management of multiple SpriteAnimation animations.
- */
-
 Sprite {
     id: item
 
@@ -29,6 +21,72 @@ Sprite {
     property alias angularVelocity: itemBody.angularVelocity
     property alias fixtures: itemBody.fixtures
     property alias gravityScale: itemBody.gravityScale
+
+    function applyForce(force, point) {
+        itemBody.applyForce(force, point);
+    }
+
+    function applyForceToCenter(force) {
+        itemBody.applyForceToCenter(force);
+    }
+
+    function applyTorque(torque) {
+        itemBody.applyTorque(torque);
+    }
+
+    function applyLinearImpulse(impulse, point) {
+        itemBody.applyLinearImpulse(impulse, point);
+    }
+
+    function applyAngularImpulse(impulse) {
+        itemBody.applyAngularImpulse(impulse);
+    }
+
+    function getWorldCenter() {
+        return itemBody.getWorldCenter();
+    }
+
+    function getWorldCenter() {
+        return itemBody.getLocalCenter();
+    }
+
+    function getMass() {
+        return itemBody.getMass();
+    }
+
+    function resetMassData() {
+        return itemBody.resetMassData();
+    }
+
+    function getInertia() {
+        return itemBody.getInertia();
+    }
+
+    function toWorldPoint(localPoint) {
+        return itemBody.toWorldPoint(localPoint);
+    }
+
+    function toWorldVector(localVector) {
+        return itemBody.FIXME();
+    }
+
+    function toLocalPoint(worldPoint) {
+        return itemBody.toLocalPoint(worldPoint);
+    }
+
+    function toLocalVector(worldVector) {
+        return itemBody.toLocalVector(worldVector);
+    }
+
+    function getLinearVelocityFromWorldPoint(point) {
+        return itemBody.getLinearVelocityFromWorldPoint(point);
+    }
+
+    function getLinearVelocityFromLocalPoint(point) {
+        return itemBody.getLinearVelocityFromLocalPoint(point);
+    }
+
+    signal bodyCreated()
 
     Body {
         id: itemBody

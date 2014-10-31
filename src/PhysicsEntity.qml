@@ -1,12 +1,6 @@
 import QtQuick 2.0
 import Bacon2D 1.0
 
-/*!
-  \qmltype PhysicsEntity
-  \inqmlmodule Bacon2D
-  \inherits Body Entity Scene
-  \brief An \l Entity with that participates in the \l Box2D physics world
-*/
 Entity {
     id: item
 
@@ -29,81 +23,72 @@ Entity {
     property alias fixedRotation: itemBody.fixedRotation
     property alias awake: itemBody.awake
     property alias fixtures: itemBody.fixtures
+
+    function applyForce(force, point) {
+        itemBody.applyForce(force, point);
+    }
+
+    function applyForceToCenter(force) {
+        itemBody.applyForceToCenter(force);
+    }
+
+    function applyTorque(torque) {
+        itemBody.applyTorque(torque);
+    }
+
     function applyLinearImpulse(impulse, point) {
         itemBody.applyLinearImpulse(impulse, point);
     }
+
+    function applyAngularImpulse(impulse) {
+        itemBody.applyAngularImpulse(impulse);
+    }
+
     function getWorldCenter() {
         return itemBody.getWorldCenter();
     }
 
-    /*!
-      \qmlmethod void PhysicsEntity::applyForce(const QPointF force, const QPointF point)
-    */
+    function getWorldCenter() {
+        return itemBody.getLocalCenter();
+    }
 
-    /*!
-      \qmlmethod void PhysicsEntity::applyForceToCenter(const QPointF &force)
-    */
+    function getMass() {
+        return itemBody.getMass();
+    }
 
-    /*!
-      \qmlmethod void PhysicsEntity::applyTorque(qreal torque)
-    */
+    function resetMassData() {
+        return itemBody.resetMassData();
+    }
 
-    /*!
-      \qmlmethod void PhysicsEntity::applyLinearImpulse(const QPointF &impulse, const QPointF &point)
-    */
+    function getInertia() {
+        return itemBody.getInertia();
+    }
 
-    /*!
-      \qmlmethod void PhysicsEntity::applyAngularImpulse(qreal impulse)
-    */
+    function toWorldPoint(localPoint) {
+        return itemBody.toWorldPoint(localPoint);
+    }
 
-    /*!
-      \qmlmethod QPointF PhysicsEntity::getWorldCenter() const
-    */
+    function toWorldVector(localVector) {
+        return itemBody.FIXME();
+    }
 
-    /*!
-      \qmlmethod QPointF PhysicsEntity::getLocalCenter() const
-    */
+    function toLocalPoint(worldPoint) {
+        return itemBody.toLocalPoint(worldPoint);
+    }
 
-    /*!
-      \qmlmethod float PhysicsEntity::getMass() const
-    */
+    function toLocalVector(worldVector) {
+        return itemBody.toLocalVector(worldVector);
+    }
 
-    /*!
-      \qmlmethod float PhysicsEntity::resetMassData()
-    */
+    function getLinearVelocityFromWorldPoint(point) {
+        return itemBody.getLinearVelocityFromWorldPoint(point);
+    }
 
-    /*!
-      \qmlmethod float PhysicsEntity::getInertia() const
-    */
+    function getLinearVelocityFromLocalPoint(point) {
+        return itemBody.getLinearVelocityFromLocalPoint(point);
+    }
 
-    /*!
-      \qmlmethod QPointF PhysicsEntity::toWorldPoint(const QPointF &localPoint) const
-    */
-
-    /*!
-      \qmlmethod QPointF PhysicsEntity::toWorldVector(const QPointF &localVector) const
-    */
-
-    /*!
-      \qmlmethod QPointF PhysicsEntity::toLocalPoint(const QPointF &worldPoint) const
-    */
-
-    /*!
-      \qmlmethod QPointF PhysicsEntity::toLocalVector(const QPointF &worldVector) const
-    */
-
-    /*!
-      \qmlmethod QPointF PhysicsEntity::getLinearVelocityFromWorldPoint(const QPointF &point) const
-    */
-
-    /*!
-      \qmlmethod QPointF PhysicsEntity::getLinearVelocityFromLocalPoint(const QPointF &point) const
-    */
-
-    /*!
-      \qmlsignal void PhysicsEntity::bodyCreated()
-      \brief Emitted when the Box2D body has finished initialization
-    */
+    signal bodyCreated()
 
     Body {
         id: itemBody
