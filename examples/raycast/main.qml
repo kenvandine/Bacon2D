@@ -104,8 +104,8 @@ Game {
             fixtures: Polygon {
                 vertices: [
                     Qt.point(0,0),
-                    Qt.point(parent.width,parent.height),
-                    Qt.point(0,parent.height)
+                    Qt.point(ground.width,ground.height),
+                    Qt.point(0,ground.height)
 
                 ]
                 friction: 0.2
@@ -154,7 +154,7 @@ Game {
 
         RayCast {
             id: laserRay
-            onFixtureReported: fixture.parent.burn = true
+            onFixtureReported: fixture.getBody().target.burn = true
             function cast() {
                 scene.rayCast(this, Qt.point(40, 300), Qt.point(700, 300))
             }
@@ -201,7 +201,7 @@ Game {
                     onBeginContact: {
                         if(other.isBall)
                         {
-                            other.parent.destroy();
+                            other.getBody().target.destroy();
                         }
                     }
                 }
