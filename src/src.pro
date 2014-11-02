@@ -67,7 +67,6 @@ qmltypes.path = $$target.path
 qmltypes.extra = $$[QT_INSTALL_BINS]/qmlplugindump -notrelocatable Bacon2D $$API_VER $$OUT_PWD/imports  > $$OUT_PWD/imports/Bacon2D/plugins.qmltypes
 
 QMLFILES += $$PWD/PhysicsEntity.qml \
-            $$PWD/PhysicsSprite.qml \
             $$PWD/BoxBody.qml \
             $$PWD/ChainBody.qml \
             $$PWD/CircleBody.qml \

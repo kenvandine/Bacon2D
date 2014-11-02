@@ -48,7 +48,7 @@ Entity {
         return itemBody.getWorldCenter();
     }
 
-    function getWorldCenter() {
+    function getLocalCenter() {
         return itemBody.getLocalCenter();
     }
 

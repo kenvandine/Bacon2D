@@ -471,12 +471,12 @@ void Scene::rayCast(Box2DRayCast *rayCast, const QPointF &point1, const QPointF 
 
 void Scene::initializeEntities(QQuickItem *parent)
 {
-
-
     QQuickItem *child;
     foreach (child, parent->childItems()) {
         if (Entity *entity = dynamic_cast<Entity *>(child)) {
             entity->setScene(this);
+        } else if (Layer *layer = dynamic_cast<Layer *>(child)) {
+            layer->setScene(this);
         }
 
         if (m_physics && m_world) {
@@ -508,6 +508,8 @@ void Scene::itemChange(ItemChange change, const ItemChangeData &data)
         QQuickItem *child = data.item;
         if (Entity *entity = dynamic_cast<Entity *>(child)) {
             entity->setScene(this);
+        } else if (Layer *layer = dynamic_cast<Layer *>(child)) {
+            layer->setScene(this);
         }
 
         if (m_physics && m_world) {

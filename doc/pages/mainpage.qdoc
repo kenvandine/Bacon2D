@@ -77,10 +77,10 @@ Game {
     \li \l {Entity}
     \li \l {Fixture}
     \li \l {PhysicsEntity}
-    \li \l {PhysicsSprite}
     \li \l {Sprite}
     \li \l {SpriteAnimation}
     \li \l {ScriptBehavior}
+    \li \l {ScrollBehavior}
     \li \l {Settings}
 \endlist
 Available through:

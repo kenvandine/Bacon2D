@@ -25,12 +25,14 @@
 #include "scene.h"
 #include "game.h"
 #include "behavior.h"
+#include "sprite.h"
 #include "../../3rdparty/qml-box2d/box2dbody.h"
 
 
 /*!
   \qmltype Entity
   \inqmlmodule Bacon2D
+  \inherits Item
   \brief Entity is the base for any component used in your game.
 
    Each Entity gets updated from the \l Scene on each step of the
@@ -74,10 +76,13 @@ void Entity::initializeEntities(QQuickItem *parent)
 {
     if (!m_scene)
         return;
+
     QQuickItem *item;
     foreach (item, parent->childItems()) {
         if (Entity *entity = dynamic_cast<Entity *>(item))
             entity->setScene(m_scene);
+        if (Sprite *sprite = dynamic_cast<Sprite *>(item))
+            sprite->setEntity(this);
         initializeEntities(item);
     }
 }
@@ -101,9 +106,11 @@ void Entity::itemChange(ItemChange change, const ItemChangeData &data)
 
     if (isComponentComplete() && change == ItemChildAddedChange) {
         QQuickItem *child = data.item;
-        if (Entity *entity = dynamic_cast<Entity *>(child)) {
+        if (Entity *entity = dynamic_cast<Entity *>(child))
             entity->setScene(m_scene);
-        }
+        if (Sprite *sprite = dynamic_cast<Sprite *>(child))
+            sprite->setEntity(this);
+
         initializeEntities(child);
     }
 
@@ -161,6 +168,7 @@ void Entity::setScene(Scene *scene)
     if (m_scene == scene)
         return;
     m_scene = scene;
+    initializeEntities(this);
     emit sceneChanged();
 }
 
