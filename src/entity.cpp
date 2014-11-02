@@ -92,7 +92,7 @@ void Entity::componentComplete()
     QQuickItem::componentComplete();
     if (m_scene && m_scene->physics() && m_scene->world()) {
         foreach (Box2DBody *body, this->findChildren<Box2DBody *>(QString(), Qt::FindDirectChildrenOnly)) {
-            //body->setTarget(this);
+            body->setTarget(this);
             body->setWorld(m_scene->world());
         }
     }
