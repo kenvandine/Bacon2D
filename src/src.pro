@@ -73,7 +73,6 @@ QMLFILES += $$PWD/PhysicsEntity.qml \
             $$PWD/EdgeBody.qml \
             $$PWD/ImageBoxBody.qml \
             $$PWD/PolygonBody.qml \
-            $$PWD/ScreenBoundaries.qml \
             $$PWD/Boundaries.qml \
             $$PWD/RectangleBoxBody.qml \
             $$PWD/plugins.qmltypes \
