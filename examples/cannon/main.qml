@@ -71,6 +71,8 @@ Game {
             y: 510
             bodyType: Body.Dynamic
             fixtures: Box {
+                width: target.width
+                height: target.height
                 density: 1
                 friction: 0.3
                 restitution: 0.5
@@ -88,7 +90,7 @@ Game {
         anchors.fill: parent
         physics: true
 
-        onInitialized: {
+        Component.onCompleted: {
             createDominos();
             createChain();
         }
@@ -143,6 +145,8 @@ Game {
                 bottom: parent.bottom
             }
             fixtures: Box {
+                width: ground.width
+                height: ground.height
                 friction: 1
                 density: 1
             }
@@ -193,7 +197,9 @@ Game {
             x: 150
             y: 443
             fixtures: Box {
-                id: canonFixtire
+                id: canonFixture
+                width: canon.width
+                height: canon.height
                 density: 0.5
             }
             Image {
@@ -210,6 +216,8 @@ Game {
             x: 50
             y: 493
             fixtures: Box {
+                width: canonBase.width
+                height: canonBase.height
                 density: 0.5
             }
             Image {
@@ -284,7 +292,7 @@ Game {
                 acceptedButtons: Qt.LeftButton
                 anchors.fill: parent
                 onPressed: {
-                    canonFixtire.density = 0.5;
+                    canonFixture.density = 0.5;
                     joint.motorSpeed = -15;
                     joint.enableMotor = true;
                     upButton.color = "#AAA";
