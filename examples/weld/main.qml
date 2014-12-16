@@ -242,7 +242,7 @@ Game {
         Timer {
             id: ballsTimer
             interval: 1000
-            running: true
+            running: game.state === Game.Running
             repeat: true
             onTriggered: {
                 var newBox = ballComponent.createObject(scene);

@@ -6,6 +6,10 @@ Game {
     width: 800
     height: 600
     currentScene: scene
+    onStateChanged: {
+        if (state !== Game.Running)
+            ballsTimer.running = false;
+    }
 
     Component {
         id: ballComponent

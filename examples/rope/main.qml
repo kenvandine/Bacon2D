@@ -155,7 +155,7 @@ Game {
         Timer {
             id: ballsTimer
             interval: 500
-            running: true
+            running: game.state === Game.Running
             repeat: true
             onTriggered: {
                 var newBox = linkComponent.createObject(scene);

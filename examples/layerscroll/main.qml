@@ -65,7 +65,7 @@ Game {
                 NumberAnimation on rotation {
                     from: 0
                     to: 360
-                    running: true
+                    running: spawnTimer.running
                     loops: Animation.Infinite
                     duration: 1800
                 }
@@ -92,7 +92,7 @@ Game {
             id: spawnTimer
 
             interval: 800
-            running: true
+            running: game.state === Game.Running
             repeat: true
 
             onTriggered: {

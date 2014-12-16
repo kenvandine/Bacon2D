@@ -42,7 +42,12 @@ class Game : public QQuickItem
     Q_PROPERTY(int ups READ ups WRITE setUps NOTIFY upsChanged)
     Q_PROPERTY(QPointF mouse READ mouse)
     Q_PROPERTY(QString gameName READ gameName WRITE setGameName NOTIFY gameNameChanged)
+    Q_PROPERTY(Game::State state READ state WRITE setState NOTIFY stateChanged)
     Q_PROPERTY(int stackLevel READ stackLevel NOTIFY stackLevelChanged)
+
+    Q_ENUMS (
+        State
+    )
 
 public:
     Game(QQuickItem *parent = 0);
@@ -62,6 +67,17 @@ public:
     QString gameName();
     void setGameName(const QString& gameName);
 
+    enum State {
+        Active,
+        Inactive,
+        Running,
+        Paused,
+        Suspended
+    };
+
+    Game::State state() const { return m_state; };
+    void setState(const Game::State &state);
+
 protected:
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
     void timerEvent(QTimerEvent *event);
@@ -71,6 +87,7 @@ signals:
     void currentSceneChanged();
     void upsChanged();
     void gameNameChanged();
+    void stateChanged();
     void stackLevelChanged();
 
 private:
@@ -78,6 +95,7 @@ private:
     QTime m_gameTime;
     int m_ups;
     int m_timerId;
+    Game::State m_state;
 
     //for handling scene transition
     Scene *m_enterScene;
@@ -95,6 +113,7 @@ private:
 private slots:
     void handleEnterAnimationRunningChanged(bool running);
     void handleExitAnimationRunningChanged(bool running);
+    void onApplicationStateChanged(Qt::ApplicationState state);
 };
 
 #endif /* _GAME_H_ */
