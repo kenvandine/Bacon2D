@@ -24,7 +24,7 @@
 #include "scene.h"
 #include "viewport.h"
 
-#include <QtCore/QCoreApplication>
+#include <QtGui/QGuiApplication>
 #include <QtQuick/QQuickWindow>
 #include <QtGui/QCursor>
 
@@ -62,10 +62,18 @@ Game::Game(QQuickItem *parent)
     , m_timerId(0)
     , m_enterScene(0)
     , m_exitScene(0)
+    , m_state(Game::Active)
 {
     m_sceneStack.clear();
     m_gameTime.start();
     m_timerId = startTimer(1000 / m_ups);
+
+    if (QCoreApplication::instance()) {
+        connect(QCoreApplication::instance(),
+                SIGNAL(applicationStateChanged(Qt::ApplicationState)),
+                SLOT(onApplicationStateChanged(Qt::ApplicationState))
+        );
+    }
 }
 
 /*!
@@ -85,6 +93,29 @@ void Game::setGameName(const QString& gameName)
     // but creates path that plays well accross platforms
     QCoreApplication::setOrganizationName(gameName);
     Q_EMIT gameNameChanged();
+}
+
+void Game::onApplicationStateChanged(Qt::ApplicationState state)
+{
+    if (m_state != Game::Paused && state != Qt::ApplicationActive)
+        this->setState(Game::Suspended);
+    else if (m_state != Game::Paused && state == Qt::ApplicationActive)
+        this->setState(Game::Running);
+}
+
+void Game::setState(const Game::State &state)
+{
+    if (state == m_state)
+        return;
+
+    m_state = state;
+
+    if (m_state == Game::Running)
+        this->currentScene()->setRunning(true);
+    else
+        this->currentScene()->setRunning(false);
+
+    emit stateChanged();
 }
 
 /*!
