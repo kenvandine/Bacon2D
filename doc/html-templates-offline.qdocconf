@@ -6,7 +6,7 @@
 #uncomment if navigation bar is not wanted
 HTML.nonavigationbar      = "true"
 
-HTML.stylesheets = style/online.css
+HTML.stylesheets = css/online.css
 HTML.extraimages += images/ico_out.png \
                     images/ico_note.png \
                     images/ico_note_attention.png \
@@ -17,7 +17,7 @@ HTML.extraimages += images/ico_out.png \
                     images/bgrContent.png
 
 #specify which files in the output directory should be packed into the qch file.
-qhp.extraFiles +=   style/online.css \
+qhp.extraFiles +=   css/online.css \
                     images/ico_out.png \
                     images/ico_note.png \
                     images/ico_note_attention.png \
