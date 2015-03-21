@@ -19,9 +19,9 @@ include(html-templates-offline.qdocconf)
 HTML.postpostheader = \
     "=====\n" \
     "---\n" \
-    "layout: default\n" \
-    "title: Contact\n" \
-    "page: contact\n" \
+    "layout: docs\n" \
+    "title: Docs\n" \
+    "page: docs\n" \
     "---\n" \
 
 HTML.footer = "=====\n" \
